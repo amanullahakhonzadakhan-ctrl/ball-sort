@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Sort 🧪 - Premium Ball Sort Puzzle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-header">
+            <div class="header-left">
+                <h1 class="game-title">Glass Sort 🧪</h1>
+            </div>
+            <div class="header-right">
+                <button class="glass-btn" id="store-btn" title="Store">🛒</button>
+                <button class="glass-btn" id="restart-btn" title="Restart Level">🔄</button>
+                <button class="glass-btn" id="levels-btn" title="Select Level">🔢</button>
+                <button class="glass-btn" id="settings-btn" title="Settings">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Game Board -->
+        <main class="game-board" id="game-board">
+            <!-- Tubes will be rendered here dynamically -->
+        </main>
+
+        <!-- Footer / Status Bar -->
+        <footer class="glass-footer">
+            <div class="stats">
+                <span class="stat-item">Level: <span id="level-number">1</span></span>
+                <span class="stat-item">Moves: <span id="moves-count">0</span></span>
+                <span class="stat-item">Coins: <span id="coins-count">0</span></span>
+            </div>
+            <button class="glass-btn undo-btn" id="undo-btn" title="Undo Last Move">↩️ Undo</button>
+        </footer>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-content glass-panel">
+            <h2>⚙️ Settings</h2>
+            <div class="settings-section">
+                <div class="setting-item">
+                    <label>Sound Effects</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Music</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="music-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Theme</label>
+                    <div class="theme-buttons">
+                        <button class="theme-btn active" data-theme="dark">🌙 Dark</button>
+                        <button class="theme-btn" data-theme="light">☀️ Light</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <button class="danger-btn" id="reset-progress-btn">Reset Progress</button>
+                </div>
+            </div>
+            <button class="modal-close-btn" id="close-settings-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Store Modal -->
+    <div class="modal-overlay" id="store-modal">
+        <div class="modal-content glass-panel store-panel">
+            <h2>🛒 Store</h2>
+            <div class="coin-balance">
+                <span class="coin-icon">💰</span>
+                <span id="store-coins">0</span> Coins
+            </div>
+            
+            <div class="store-tabs">
+                <button class="store-tab active" data-tab="colors">🎨 Colors</button>
+                <button class="store-tab" data-tab="emojis">😊 Emojis</button>
+            </div>
+
+            <!-- Color Packs -->
+            <div class="store-content" id="colors-store">
+                <div class="store-grid">
+                    <div class="store-item" data-item="pack1" data-price="0">
+                        <div class="item-preview">
+                            <div class="preview-ball red"></div>
+                            <div class="preview-ball blue"></div>
+                            <div class="preview-ball green"></div>
+                            <div class="preview-ball yellow"></div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Classic Pack</h3>
+                            <div class="item-price owned">✓ Owned</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="pack2" data-price="100">
+                        <div class="item-preview">
+                            <div class="preview-ball purple"></div>
+                            <div class="preview-ball orange"></div>
+                            <div class="preview-ball pink"></div>
+                            <div class="preview-ball cyan"></div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Neon Pack</h3>
+                            <div class="item-price">💰 100</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="pack3" data-price="200">
+                        <div class="item-preview">
+                            <div class="preview-ball lime"></div>
+                            <div class="preview-ball indigo"></div>
+                            <div class="preview-ball gradient1"></div>
+                            <div class="preview-ball gradient2"></div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Premium Pack</h3>
+                            <div class="item-price">💰 200</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="pack4" data-price="300">
+                        <div class="item-preview">
+                            <div class="preview-ball rainbow"></div>
+                            <div class="preview-ball gold"></div>
+                            <div class="preview-ball silver"></div>
+                            <div class="preview-ball cosmic"></div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Ultra Pack</h3>
+                            <div class="item-price">💰 300</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emoji Packs -->
+            <div class="store-content hidden" id="emojis-store">
+                <div class="store-grid">
+                    <div class="store-item" data-item="emoji1" data-price="150">
+                        <div class="item-preview emoji-preview">
+                            <div class="preview-emoji">😊</div>
+                            <div class="preview-emoji">😎</div>
+                            <div class="preview-emoji">😍</div>
+                            <div class="preview-emoji">🤩</div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Happy Pack</h3>
+                            <div class="item-price">💰 150</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="emoji2" data-price="180">
+                        <div class="item-preview emoji-preview">
+                            <div class="preview-emoji">🐶</div>
+                            <div class="preview-emoji">🐱</div>
+                            <div class="preview-emoji">🐼</div>
+                            <div class="preview-emoji">🦊</div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Animal Pack</h3>
+                            <div class="item-price">💰 180</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="emoji3" data-price="220">
+                        <div class="item-preview emoji-preview">
+                            <div class="preview-emoji">⚽</div>
+                            <div class="preview-emoji">🏀</div>
+                            <div class="preview-emoji">🎾</div>
+                            <div class="preview-emoji">⚾</div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Sports Pack</h3>
+                            <div class="item-price">💰 220</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="emoji4" data-price="250">
+                        <div class="item-preview emoji-preview">
+                            <div class="preview-emoji">🍎</div>
+                            <div class="preview-emoji">🍊</div>
+                            <div class="preview-emoji">🍇</div>
+                            <div class="preview-emoji">🍓</div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Fruit Pack</h3>
+                            <div class="item-price">💰 250</div>
+                        </div>
+                    </div>
+
+                    <div class="store-item" data-item="emoji5" data-price="350">
+                        <div class="item-preview emoji-preview">
+                            <div class="preview-emoji">⭐</div>
+                            <div class="preview-emoji">💎</div>
+                            <div class="preview-emoji">👑</div>
+                            <div class="preview-emoji">🏆</div>
+                        </div>
+                        <div class="item-info">
+                            <h3>Premium Pack</h3>
+                            <div class="item-price">💰 350</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="store-actions">
+                <button class="ad-btn" id="watch-ad-store-btn">
+                    <span class="pulse-dot"></span>
+                    Watch Ad for +50 Coins 📺
+                </button>
+            </div>
+
+            <button class="modal-close-btn" id="close-store-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Level Select Modal -->
+    <div class="modal-overlay" id="levels-modal">
+        <div class="modal-content glass-panel">
+            <h2>🔢 Select Level</h2>
+            <div class="levels-grid" id="levels-grid">
+                <!-- Level buttons will be rendered here -->
+            </div>
+            <button class="modal-close-btn" id="close-levels-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal-overlay" id="win-modal">
+        <div class="modal-content glass-panel win-panel">
+            <div class="confetti-container" id="confetti-container"></div>
+            <h2>🎉 Level Complete!</h2>
+            <div class="win-stats">
+                <p>Moves: <span id="final-moves">0</span></p>
+                <p>Level: <span id="final-level">1</span></p>
+            </div>
+            <button class="primary-btn next-level-btn" id="next-level-btn">Next Level →</button>
+            <button class="reward-btn" id="watch-ad-btn">
+                <span class="pulse-dot"></span>
+                Watch Ad for +50 Coins 💰
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Ad Overlay -->
+    <div class="loading-overlay" id="loading-ad-overlay">
+        <div class="loading-content glass-panel">
+            <div class="loader"></div>
+            <p>Loading ad...</p>
+            <p class="ad-timer" id="ad-timer">5s</p>
+        </div>
+    </div>
+
+    <!-- Reward Granted Animation -->
+    <div class="reward-toast" id="reward-toast">
+        <span class="reward-icon">💰</span>
+        <span class="reward-text">+50 Coins Earned!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/levelGenerator.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
